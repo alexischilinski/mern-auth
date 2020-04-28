@@ -2,6 +2,7 @@ const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
 const dotenv = require('dotenv')
+const postRoute = require('./routes/posts')
 
 //routes
 const authRoute = require('./routes/auth')
@@ -18,5 +19,6 @@ app.use(express.json())
 
 //route middlewares
 app.use('/api/user', authRoute)
+app.use('/api/posts', postRoute)
 
 app.listen(3000, ()=>console.log("server up and running"))
