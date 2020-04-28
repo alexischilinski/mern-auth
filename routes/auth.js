@@ -2,6 +2,7 @@ const router = require('express').Router()
 const User = require('../models/User')
 const { registerValidation, loginValidation } = require('../validation')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 //validation
 // const Joi = require('@hapi/joi')
@@ -54,7 +55,11 @@ router.post('/login', async (req, res) => {
     const validPass = await bcrypt.compare(req.body.password, user.password)
     if(!validPass) return res.status(400).send('incorrect pw')
 
-    res.send('logged in')
+    //create and assign token
+    const token = jwt.sign({_id: user._id}, process.env.TOKEN_SECRET)
+    res.header('auth-token', token).send(token)
+
+    // res.send('logged in')
 })
 
 // router.post('/login', (req, res)=>{
